@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import edu.ucla.cs.cs144.SearchResult;
 import edu.ucla.cs.cs144.AuctionSearchClient;
 
@@ -26,26 +27,22 @@ public class SearchServlet extends HttpServlet implements Servlet {
 				numResultsToReturn = 0;
 			}
 			String query = request.getParameter("q").toString();
-			SearchResult[] result = AuctionSearchClient.basicSearch(query, numResultsToSkip, numResultsToReturn);
-			String[] resultLink = new String[result.length];
-			for(int i = 0; i < result.length; i++){
-				resultLink[i] = "<a href=\"/item?itemID=" + result[i].getItemId() + "\">" + result[i].getName() + "</a>";
+			SearchResult[] result = AuctionSearchClient.basicSearch(query, numResultsToSkip, numResultsToReturn * 2);
+			int len = Math.min(numResultsToReturn, result.length);
+			String[] resultLink = new String[len];
+			for(int i = 0; i < len; i++){
+				resultLink[i] = "<a href=\"../eBay/item?itemID=" + result[i].getItemId() + "\">" + result[i].getName() + "</a>";
 			}
 
 			String prev = "";
-			SearchResult[] resultPrev = null;
-			if(numResultsToSkip - numResultsToReturn >= 0){
-				resultPrev = AuctionSearchClient.basicSearch(query, numResultsToSkip - numResultsToReturn, numResultsToReturn);
-			}
-			if(resultPrev != null && resultPrev.length > 0){
-				prev = "<a href = \"../eBay/search?numResultsToSkip=" + (numResultsToSkip - numResultsToReturn) + "&numResultsToReturn=" + 
+			int prevResultToSkip = Math.max(0, numResultsToSkip - numResultsToReturn);
+			if(result.length > 0 && prevResultToSkip < numResultsToSkip){
+				prev = "<a href = \"/eBay/search?numResultsToSkip=" + (numResultsToSkip - numResultsToReturn) + "&numResultsToReturn=" + 
 						numResultsToReturn + "&q=" + query +"\">prev</a>";
 			}
 
 			String next = "";
-			SearchResult[] resultNext = null;
-			resultNext = AuctionSearchClient.basicSearch(query, numResultsToSkip + numResultsToReturn, numResultsToReturn);
-			if(resultNext != null && resultNext.length > 0){
+			if(result.length > numResultsToReturn){
 				next = "<a href = \"/eBay/search?numResultsToSkip=" + (numResultsToSkip + numResultsToReturn) + "&numResultsToReturn=" + 
 						numResultsToReturn + "&q=" + query + "\">next</a>";
 			}
