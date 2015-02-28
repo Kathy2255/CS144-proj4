@@ -72,6 +72,9 @@ public class ItemServlet extends HttpServlet implements Servlet {
 			String location = locationElement.getTextContent();
 			String latitude = locationElement.getAttribute("Latitude");
 			String longitude = locationElement.getAttribute("Longitude");
+			String mapLocation = location;
+			String mapLatitude = latitude;
+			String mapLongitude = longitude; 
 			String[] bidderLocationList = new String[bidList.getLength()];
 			if(latitude != "" && longitude != ""){
 					location += ("[" + latitude + ", " + longitude + "]");
@@ -132,6 +135,9 @@ public class ItemServlet extends HttpServlet implements Servlet {
 			request.setAttribute("sellerID", sellerID);
 			request.setAttribute("sellerRating", sellerRating);
 			request.setAttribute("description", description);
+			request.setAttribute("mapLatitude", mapLatitude);
+			request.setAttribute("mapLongitude", mapLongitude);
+			request.setAttribute("mapLocation", mapLocation);
 			//1045769659
 			request.getRequestDispatcher("/item.jsp").forward(request, response);
 		}

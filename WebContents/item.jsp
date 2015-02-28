@@ -1,5 +1,54 @@
 <html>
-	<body>
+<% 
+	String mapLatitude = "" + request.getAttribute("mapLatitude");
+	String mapLongitude = "" + request.getAttribute("mapLongitude");
+	String mapLocation = "" + request.getAttribute("mapLocation"); 
+	String address = mapLocation + ", " + request.getAttribute("country");
+%>
+<head> 
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" /> 
+<style type="text/css"> 
+  html { height: 100% } 
+  body { height: 100%; margin: 0px; padding: 0px } 
+  #map_canvas { height: 100% } 
+</style> 
+<script type="text/javascript" 
+    src="http://maps.google.com/maps/api/js?sensor=false"> 
+</script> 
+<script type="text/javascript"> 
+
+
+function initialize() { 
+  	var mapLatitude = "<%= mapLatitude %>";
+  	var mapLongitude = "<%= mapLongitude %>";
+  	var address = "<%= address %>";
+  	var latlng = new google.maps.LatLng(mapLatitude, mapLongitude); 
+	var myOptions = { 
+	    zoom: 14, // default is 8  
+	    center: latlng, 
+	    mapTypeId: google.maps.MapTypeId.ROADMAP 
+	}; 
+	var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  	if(mapLatitude === "" || mapLongitude === ""){
+  		var geocoder = new google.maps.Geocoder();
+  		geocoder.geocode( { 'address': address}, function(results, status) {
+      		if (status == google.maps.GeocoderStatus.OK) {
+        		map.setCenter(results[0].geometry.location);
+        		var marker = new google.maps.Marker({
+            		map: map,
+            		position: results[0].geometry.location
+        		});
+      		} else {
+      			map.setZoom(0);
+        		//alert("Geocode was not successful for the following reason: " + status);
+      		}
+    	});
+  	}
+  } 
+
+</script> 
+</head> 
+	<body onload="initialize()">
 		<form action="/eBay/item">
 			Search:</br>
 			<input type="text" name="itemID"/>
@@ -30,6 +79,7 @@
 		%>
 
 		<h2><%= name %></h2>
+		<div id="map_canvas" style="width:50%; height:50%"></div> 
 		<p>Category: <%= category %></p>
 		<p>Currently: <%= currently %></p>
 		<p>Buy Price: <%= buy_price %></p>

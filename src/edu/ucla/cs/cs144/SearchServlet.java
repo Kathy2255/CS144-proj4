@@ -24,7 +24,7 @@ public class SearchServlet extends HttpServlet implements Servlet {
 	        }
 			int numResultsToReturn = Integer.parseInt(request.getParameter("numResultsToReturn").toString());
 			if(numResultsToReturn < 0){
-				numResultsToReturn = 0;
+				numResultsToReturn = 10;
 			}
 			String query = request.getParameter("q").toString();
 			SearchResult[] result = AuctionSearchClient.basicSearch(query, numResultsToSkip, numResultsToReturn * 2);
