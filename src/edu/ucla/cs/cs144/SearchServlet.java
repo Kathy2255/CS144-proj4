@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 
 
 import edu.ucla.cs.cs144.SearchResult;
@@ -36,16 +37,17 @@ public class SearchServlet extends HttpServlet implements Servlet {
 			}
 
 			String prev = "";
+			String encodeQuery = URLEncoder.encode(query, "UTF-8");
 			int prevResultToSkip = Math.max(0, numResultsToSkip - numResultsToReturn);
 			if(result.length > 0 && prevResultToSkip < numResultsToSkip){
 				prev = "<a href = \"/eBay/search?numResultsToSkip=" + (numResultsToSkip - numResultsToReturn) + "&numResultsToReturn=" + 
-						numResultsToReturn + "&q=" + query +"\">prev</a>";
+						numResultsToReturn + "&q=" + encodeQuery +"\">prev</a>";
 			}
 
 			String next = "";
 			if(result.length > numResultsToReturn){
 				next = "<a href = \"/eBay/search?numResultsToSkip=" + (numResultsToSkip + numResultsToReturn) + "&numResultsToReturn=" + 
-						numResultsToReturn + "&q=" + query + "\">next</a>";
+						numResultsToReturn + "&q=" + encodeQuery + "\">next</a>";
 			}
 
 			request.setAttribute("result", resultLink);
@@ -57,8 +59,8 @@ public class SearchServlet extends HttpServlet implements Servlet {
 			request.getRequestDispatcher("/search.jsp").forward(request, response);
 		}
 		catch(Exception e) {
-			//response.getWriter().write(e.toString());
-			request.getRequestDispatcher("/keywordSearch.html").forward(request, response);
+			response.getWriter().write(e.toString());
+			//request.getRequestDispatcher("/keywordSearch.html").forward(request, response);
 		}
 	}
 
