@@ -115,7 +115,7 @@ public class ItemServlet extends HttpServlet implements Servlet {
 			String sellerID = sellerElement.getAttribute("UserID");
 			String sellerRating = sellerElement.getAttribute("Rating");
 			String description = doc.getElementsByTagName("Description").item(0).getTextContent();
-	
+			
 			request.setAttribute("name", name);
 			request.setAttribute("category", category);
 			request.setAttribute("currently", currently);
@@ -142,7 +142,8 @@ public class ItemServlet extends HttpServlet implements Servlet {
 			request.getRequestDispatcher("/item.jsp").forward(request, response);
 		}
 		catch(Exception e) {
-			response.getWriter().write(e.toString());
+			//response.getWriter().write(e.toString());
+			request.getRequestDispatcher("/getItem.html").forward(request, response);
 		}
 		
 

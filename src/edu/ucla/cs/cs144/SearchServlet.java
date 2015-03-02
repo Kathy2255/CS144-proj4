@@ -19,19 +19,20 @@ public class SearchServlet extends HttpServlet implements Servlet {
     {
     	try{
 	        int numResultsToSkip = Integer.parseInt(request.getParameter("numResultsToSkip").toString());
-	        if(numResultsToSkip < 0){
+	        if(!(numResultsToSkip >= 0 && numResultsToSkip < 2147483640)){
 	        	numResultsToSkip = 0;
 	        }
 			int numResultsToReturn = Integer.parseInt(request.getParameter("numResultsToReturn").toString());
-			if(numResultsToReturn < 0){
+			if(!(numResultsToReturn > 0 && numResultsToReturn < 2147483640)){
 				numResultsToReturn = 10;
 			}
 			String query = request.getParameter("q").toString();
-			SearchResult[] result = AuctionSearchClient.basicSearch(query, numResultsToSkip, numResultsToReturn * 2);
+			SearchResult[] result = AuctionSearchClient.basicSearch(query, numResultsToSkip, numResultsToReturn + 1);
 			int len = Math.min(numResultsToReturn, result.length);
 			String[] resultLink = new String[len];
 			for(int i = 0; i < len; i++){
-				resultLink[i] = "<a href=\"../eBay/item?itemID=" + result[i].getItemId() + "\">" + result[i].getName() + "</a>";
+				resultLink[i] = "<a href=\"../eBay/item?itemID=" + result[i].getItemId() + "\">" + result[i].getItemId() + " | "
+				+ result[i].getName() + "</a>";
 			}
 
 			String prev = "";
@@ -56,7 +57,8 @@ public class SearchServlet extends HttpServlet implements Servlet {
 			request.getRequestDispatcher("/search.jsp").forward(request, response);
 		}
 		catch(Exception e) {
-			response.getWriter().write(e.toString());
+			//response.getWriter().write(e.toString());
+			request.getRequestDispatcher("/keywordSearch.html").forward(request, response);
 		}
 	}
 
