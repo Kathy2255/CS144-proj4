@@ -49,9 +49,10 @@ function initialize() {
 </script> 
 </head> 
 	<body onload="initialize()">
+		<p><a href="index.html">back home</a></p>
 		<form action="/eBay/item">
 			Search:</br>
-			<input type="text" name="itemID"/>
+			<input type="text" name="itemID" autocomplete="off" style="width:500px;"/>
 			<input type="submit" value="submit"/>
 		</form>
 

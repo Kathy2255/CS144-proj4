@@ -17,6 +17,7 @@
 
 	</HEAD>
 	<BODY>
+		<p><a href="index.html">back home</a></p>
 		<h1>Keyword Search Page</h1>
 		<form action="/eBay/search">
 			<input type="hidden" name="numResultsToSkip" value="0"/>

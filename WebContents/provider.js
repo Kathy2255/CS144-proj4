@@ -3,17 +3,15 @@ function getXmlHttpRequestObject()
     var xmlHttp = false;
     if (window.XMLHttpRequest)
     {
-        //IE7+, Firefox, Chrome 
         return new XMLHttpRequest(); 
     }
     else if (window.ActiveXObject)
     {
-        //Why IE6, IE5????
         return new ActiveXObject("Microsoft.XMLHTTP");
     }
     else
     {
-        alert("Really? Get Chrome!");
+        alert("Browser unsupported");
     }
 };
 
