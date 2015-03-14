@@ -83,7 +83,21 @@ function initialize() {
 		<div id="map_canvas" style="width:50%; height:50%"></div> 
 		<p>Category: <%= category %></p>
 		<p>Currently: <%= currently %></p>
-		<p>Buy Price: <%= buy_price %></p>
+
+		<p>Buy Price: <%= buy_price %>
+			<%if(request.getAttribute("buy_price") != "--")
+			{ 
+			%>
+				<form action = "/eBay/payment ">
+					
+					<input type="hidden" name="itemid" value="<%= request.getAttribute("itemid") %>" />
+					<input type="submit" value="Pay Now" />
+				</form>
+			<%
+			}
+			%>
+		</p>
+
 		<p>First Bid: <%= first_bid %></p>
 		<p>Number of Bids: <%= number_of_bids %></p>
 		<p>Country: <%= country %></p>

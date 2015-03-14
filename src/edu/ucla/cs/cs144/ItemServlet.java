@@ -19,6 +19,10 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import java.io.StringReader;
 
+import javax.servlet.http.HttpSession;
+
+import java.util.HashMap;
+
 public class ItemServlet extends HttpServlet implements Servlet {
        
     public ItemServlet() {}
@@ -116,10 +120,30 @@ public class ItemServlet extends HttpServlet implements Servlet {
 			String sellerRating = sellerElement.getAttribute("Rating");
 			String description = doc.getElementsByTagName("Description").item(0).getTextContent();
 			
+			request.setAttribute("itemid", itemID);
 			request.setAttribute("name", name);
 			request.setAttribute("category", category);
 			request.setAttribute("currently", currently);
+
 			request.setAttribute("buy_price", buy_price);
+			if (!buy_price.equals("--")) {
+				HttpSession session = request.getSession(true);
+				HashMap<String, String[]> map;
+
+				if (session.getAttribute("itemMap") == null) {
+                    map = new HashMap<String, String[]>();
+                } else {
+                    map = (HashMap<String, String[]>)session.getAttribute("itemMap");
+                }
+
+                if (!map.containsKey(itemID)) {
+                    String[] mapvalue = new String[2];
+                    mapvalue[0] = name;
+                    mapvalue[1] = buy_price;
+                    map.put(itemID, mapvalue);
+                    session.setAttribute("itemMap", map);
+                }
+			}
 			request.setAttribute("first_bid", first_bid);
 			request.setAttribute("number_of_bids", number_of_bids);
 			request.setAttribute("bidderIDList", bidderIDList);

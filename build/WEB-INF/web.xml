@@ -1,5 +1,21 @@
 <web-app id="simple" version="2.4">
     <servlet>
+        <servlet-name>ConfirmServlet</servlet-name>
+        <servlet-class>edu.ucla.cs.cs144.ConfirmServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConfirmServlet</servlet-name>
+        <url-pattern>/confirm</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PaymentServlet</servlet-name>
+        <servlet-class>edu.ucla.cs.cs144.PaymentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PaymentServlet</servlet-name>
+        <url-pattern>/payment</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>SearchServlet</servlet-name>
         <servlet-class>edu.ucla.cs.cs144.SearchServlet</servlet-class>
     </servlet>
